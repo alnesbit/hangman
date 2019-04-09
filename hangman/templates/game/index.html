@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Games{% endblock %}</h1>
+  {% if g.user %}
+    <a class="action" href="{{ url_for('game.create') }}">New</a>
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+  {% for game in games %}
+    <article class="game">
+      <header>
+        <div>
+          <h1>{{ game['word'] }}</h1>
+          <div class="about">by {{ game['username'] }} on {{ game['created'].strftime('%Y-%m-%d') }}</div>
+        </div>
+        {% if g.user['id'] == game['player_id'] %}
+          <a class="action" href="{{ url_for('game.update', id=game['id']) }}">Edit</a>
+        {% endif %}
+      </header>
+      <p class="game">{{ game['id'] }}</p>
+    </article>
+    {% if not loop.last %}
+      <hr>
+    {% endif %}
+  {% endfor %}
+{% endblock %}
